@@ -1,4 +1,4 @@
-struct DATA{
+struct Data{
     float alt;
     float vel;
     float pres;

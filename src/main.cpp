@@ -26,32 +26,18 @@ The following components were used for the Flight Computer:
  */
 #include "arduino_freertos.h"
 #include "thrustMIT.h"
+#include "../../../Altair_FC/src/tasks.cpp"
 #include <imxrt.h>
 #include <SD.h>
 #define FILENAME "data.txt"
 
-DATA data = {1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.1};
-
-static void task1(void*){
-  while(true){
-    if (!SD.begin(BUILTIN_SDCARD)) {
-      while(1)
-    Serial.println("SD initialization failed!");
-  }
-     File file = SD.open("data.txt", FILE_WRITE);
-
-  // write struct to file
-  if (file) {
-    file.write((uint8_t*)&data, sizeof(data));
-    file.close();
-  }
-  }
-}
-
 FLASHMEM __attribute__((noinline)) void setup(){
   Serial.begin(9600);
   
-  xTaskCreate(task1, "task1", 512, nullptr, 1, nullptr);
+  xTaskCreate(apogee_detection, "Apogee Detection", 512, nullptr, 1, nullptr);
+  xTaskCreate(apogee_prediction, "Apogee Prediction", 512, nullptr, 1, nullptr);
+  xTaskCreate(data_telemetry, "Data Telemetry", 512, nullptr, 1, nullptr);
+  xTaskCreate(data_logging, "Apogee Logging", 512, nullptr, 1, nullptr);
   vTaskStartScheduler();
 }
 
