@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "core_pins.h": "c",
+        "pin_definitions.c": "cpp"
+    }
+}
