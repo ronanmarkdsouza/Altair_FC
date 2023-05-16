@@ -27,6 +27,7 @@ The following components were used for the Flight Computer:
 #include "arduino_freertos.h"
 #include "thrustMIT.h"
 #include "../../../Altair_FC/src/tasks.cpp"
+#include "../../../Altair_FC/src/states.cpp"
 #include <imxrt.h>
 #include <SD.h>
 #define FILENAME "data.txt"
