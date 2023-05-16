@@ -1,2 +1,2 @@
-#include "PIN_DEFINITIONS.c"
-#include "DATA_PACKET.c"
+#include "pin_definitions.c"
+#include "data_packet.c"
