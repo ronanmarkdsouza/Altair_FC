@@ -1,7 +1,8 @@
 # Altair_FC
-This is the official code for the flight computer onboard Altair by thrustMIT
+
 Code for the Flight Computer on-board Altair.
 This code has been written by thrustMIT 2022-23 for Spaceport America Cup 2023
+
 <pre>
 The following components were used for the Flight Computer: 
               - LED1       | Sensor Check 
