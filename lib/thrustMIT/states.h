@@ -1,3 +1,6 @@
+#ifndef STATES_H
+#define STATES_H
+
 enum States{
     INITIALIZE,
     ROP,
@@ -9,3 +12,5 @@ enum States{
     TOUCHDOWN,
     FAILURE
 };
+
+#endif

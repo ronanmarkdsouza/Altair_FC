@@ -24,21 +24,22 @@ The following components were used for the Flight Computer:
  * @author  Ronan Mark D'souza
  * @date    05.05.2023
  */
-#include "arduino_freertos.h"
-#include "thrustMIT.h"
-#include "../../../Altair_FC/src/tasks.cpp"
-#include "../../../Altair_FC/src/states.cpp"
-#include <imxrt.h>
-#include <SD.h>
-#define FILENAME "data.txt"
+#include "../../../Altair_FC/src/tasks/tasks.h"
+
+Data data_pack;
+TaskHandle_t get_dataHandle;
+TaskHandle_t apogee_detectionHandle;
+TaskHandle_t apogee_predictionHandle;
+TaskHandle_t data_telemetryHandle;
+TaskHandle_t data_loggingHandle;
 
 FLASHMEM __attribute__((noinline)) void setup(){
   Serial.begin(9600);
-  
-  xTaskCreate(apogee_detection, "Apogee Detection", 512, nullptr, 1, nullptr);
-  xTaskCreate(apogee_prediction, "Apogee Prediction", 512, nullptr, 1, nullptr);
-  xTaskCreate(data_telemetry, "Data Telemetry", 512, nullptr, 1, nullptr);
-  xTaskCreate(data_logging, "Apogee Logging", 512, nullptr, 1, nullptr);
+  xTaskCreate(get_data, "Get Data", 16384, nullptr, 1, &get_dataHandle);
+  xTaskCreate(apogee_detection, "Apogee Detection", 16384, nullptr, 1, &apogee_detectionHandle);
+  xTaskCreate(apogee_prediction, "Apogee Prediction", 16384, nullptr, 1, &apogee_predictionHandle);
+  xTaskCreate(data_telemetry, "Data Telemetry", 16384, nullptr, 1, &data_telemetryHandle);
+  xTaskCreate(data_logging, "Apogee Logging", 16384, nullptr, 1, &data_loggingHandle);
   vTaskStartScheduler();
 }
 

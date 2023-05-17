@@ -1,3 +1,6 @@
+#ifdef PIN_DEF_H
+#define PIN_DEF_H
+
 //Indicator LEDs
 #define SENSOR_CHECK 37 //LED indicator if all sensors are functioning properly
 #define TEL_LINK 33 //To determine whether there is a link in telemetry with the ground station
@@ -24,3 +27,5 @@
 #define AIR_BRAKES 23
 #define GPS_SERIAL Serial4
 #define XB_SERIAL Serial2
+
+#endif

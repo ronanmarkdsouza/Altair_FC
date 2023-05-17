@@ -1,3 +1,6 @@
+#ifndef DATA_PACKET_H
+#define DATA_PACKET_H
+
 struct Data{
     float alt;
     float vel;
@@ -9,3 +12,5 @@ struct Data{
     float pitch;
     float yaw;
 };
+
+#endif
