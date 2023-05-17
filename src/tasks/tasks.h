@@ -6,7 +6,6 @@
 #include <imxrt.h>
 #include <SD.h>
 #include "thrustMIT.h"
-#include "thrustMIT.h"
 
 extern Data data_pack;
 extern TaskHandle_t get_dataHandle;
