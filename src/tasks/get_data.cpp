@@ -1,3 +1,9 @@
+/**
+ * @file    get_data.cpp
+ * @brief   Code for Reading data from sensors
+ * @author  Ronan Mark D'souza
+ * @date    17.05.2023
+ */
 #include "../../../Altair_FC/src/tasks/tasks.h"
 
 void get_data(void*){
