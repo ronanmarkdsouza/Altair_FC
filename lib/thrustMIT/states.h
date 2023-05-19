@@ -5,6 +5,7 @@ enum States{
     INITIALIZE,
     ROP,
     LIFTOFF,
+    BOOST,
     COAST,
     APOGEE,
     DESCENT,

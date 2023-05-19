@@ -7,10 +7,13 @@
 #include "../../../Altair_FC/src/tasks/tasks.h"
 
 void get_data(void*){
-  //Implement the code for collecting the data from the sensors here and also send the data to all the other tasks
   while(true){
-  //Acquire data
+    time_t now = time(0);
+    tm *gmtm = gmtime(&now);
+    String time_stamp = asctime(gmtm);
+    
     taskENTER_CRITICAL();
+    data_pack.time_stamp = time_stamp;
     data_pack.alt = 10.2;
     data_pack.vel = 10.2;
     data_pack.pres = 10.2;
@@ -22,10 +25,10 @@ void get_data(void*){
     data_pack.yaw = 10.2;
     taskEXIT_CRITICAL();
 
-    xTaskNotifyGive(apogee_detectionHandle);
-    xTaskNotifyGive(apogee_predictionHandle);
-    xTaskNotifyGive(data_telemetryHandle);
-    xTaskNotifyGive(data_loggingHandle);
+    xTaskNotifyGive(apogee_detection_tHandle);
+    xTaskNotifyGive(apogee_prediction_tHandle);
+    xTaskNotifyGive(data_telemetry_tHandle);
+    xTaskNotifyGive(data_logging_tHandle);
 
   }
 }

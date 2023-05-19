@@ -13,7 +13,7 @@ The following components were used for the Flight Computer:
               - MPX5100DP  | Differential Pressire Sensor
               - Adafruit   |
                 Ultimate   | GPS Coordinates
-                GPS        | 
+                GPS        |
               - XBee Pro   | Data Telemetry
               - D4184      | MOSFET for Parachute Ejection and Reefing
               - MG996      | Servo Motor for actuation of Air Brakes
@@ -27,20 +27,27 @@ The following components were used for the Flight Computer:
 #include "../../../Altair_FC/src/tasks/tasks.h"
 
 Data data_pack;
-TaskHandle_t get_dataHandle;
-TaskHandle_t apogee_detectionHandle;
-TaskHandle_t apogee_predictionHandle;
-TaskHandle_t data_telemetryHandle;
-TaskHandle_t data_loggingHandle;
+TaskHandle_t initialize_tHandle = NULL;
+TaskHandle_t get_data_tHandle = NULL;
+TaskHandle_t apogee_detection_tHandle = NULL;
+TaskHandle_t apogee_prediction_tHandle = NULL;
+TaskHandle_t data_telemetry_tHandle = NULL;
+TaskHandle_t data_logging_tHandle = NULL;
+TaskHandle_t failure_tHandle = NULL;
+TaskHandle_t FSM_tHandle = NULL;
 
-FLASHMEM __attribute__((noinline)) void setup(){
+FLASHMEM __attribute__((noinline)) void setup()
+{
   Serial.begin(9600);
-  xTaskCreate(get_data, "Get Data", 16384, nullptr, 1, &get_dataHandle);
-  xTaskCreate(apogee_detection, "Apogee Detection", 16384, nullptr, 1, &apogee_detectionHandle);
-  xTaskCreate(apogee_prediction, "Apogee Prediction", 16384, nullptr, 1, &apogee_predictionHandle);
-  xTaskCreate(data_telemetry, "Data Telemetry", 16384, nullptr, 1, &data_telemetryHandle);
-  xTaskCreate(data_logging, "Apogee Logging", 16384, nullptr, 1, &data_loggingHandle);
+  GPS_SERIAL.begin(9600);
+  xTaskCreate(FSM, "FSM", 8192, nullptr, 1, &FSM_tHandle);
+  xTaskCreate(initialize, "Initialize", 8192, nullptr, 1, &initialize_tHandle);
+  xTaskCreate(get_data, "Get Data", 8192, nullptr, 1, &get_data_tHandle);
+  xTaskCreate(apogee_detection, "Apogee Detection", 8192, nullptr, 1, &apogee_detection_tHandle);
+  xTaskCreate(data_telemetry, "Data Telemetry", 8192, nullptr, 1, &data_telemetry_tHandle);
+  xTaskCreate(data_logging, "Data Logging", 8192, nullptr, 1, &data_logging_tHandle);
+  xTaskCreate(failure_t, "Failure", 8192, nullptr, 1, &failure_tHandle);
   vTaskStartScheduler();
 }
 
-void loop(){}
+void loop() {}

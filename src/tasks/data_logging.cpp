@@ -14,10 +14,8 @@ void data_logging(void*){
   while(true){
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     Serial.println("Data Logging");
-  // open file for writing
   File file = SD.open("data.bin", FILE_WRITE);
 
-  // write struct to file
   if (file) {
     file.write((uint8_t*)&data_pack, sizeof(data_pack));
     file.close();

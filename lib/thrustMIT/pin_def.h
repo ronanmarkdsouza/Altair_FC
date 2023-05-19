@@ -1,4 +1,4 @@
-#ifdef PIN_DEF_H
+#ifndef PIN_DEF_H
 #define PIN_DEF_H
 
 //Indicator LEDs
