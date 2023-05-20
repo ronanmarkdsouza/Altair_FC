@@ -24,11 +24,5 @@ void get_data(void*){
     data_pack.pitch = 10.2;
     data_pack.yaw = 10.2;
     taskEXIT_CRITICAL();
-
-    xTaskNotifyGive(apogee_detection_tHandle);
-    xTaskNotifyGive(apogee_prediction_tHandle);
-    xTaskNotifyGive(data_telemetry_tHandle);
-    xTaskNotifyGive(data_logging_tHandle);
-
   }
 }

@@ -7,17 +7,18 @@
 #include "../../../Altair_FC/src/tasks/tasks.h"
 void initialize(void *){
   while (true){
-    if(!true){
+    if(SD.begin(BUILTIN_SDCARD)){
+      digitalWrite(SENSOR_CHECK, arduino::HIGH);
       taskENTER_CRITICAL();
       state = ROP;
-      taskEXIT_CRITICAL();
       xTaskNotifyGive(FSM_tHandle);
+      taskEXIT_CRITICAL();
     }
     else{
       taskENTER_CRITICAL();
       state = FAILURE;
-      taskEXIT_CRITICAL();
       xTaskNotifyGive(FSM_tHandle);
+      taskEXIT_CRITICAL();
     }
     delay(1000);
   }

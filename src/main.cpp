@@ -40,6 +40,11 @@ FLASHMEM __attribute__((noinline)) void setup()
 {
   Serial.begin(9600);
   GPS_SERIAL.begin(9600);
+  pinMode(MAIN, arduino::OUTPUT);
+  pinMode(DROGUE, arduino::OUTPUT);
+  pinMode(BUZZER, arduino::OUTPUT);
+  pinMode(MISHAP, arduino::OUTPUT);
+  pinMode(SENSOR_CHECK, arduino::OUTPUT);
   xTaskCreate(FSM, "FSM", 8192, nullptr, 1, &FSM_tHandle);
   xTaskCreate(initialize, "Initialize", 8192, nullptr, 1, &initialize_tHandle);
   xTaskCreate(get_data, "Get Data", 8192, nullptr, 1, &get_data_tHandle);

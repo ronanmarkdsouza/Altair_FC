@@ -8,16 +8,12 @@
 
 States state = INITIALIZE;
 void FSM(void*){
-    Serial.println("Running FSM");
-    Serial.println("Suspending all tasks except FSM");
-
     vTaskSuspend(initialize_tHandle);
     vTaskSuspend(get_data_tHandle);
     vTaskSuspend(apogee_detection_tHandle);
     vTaskSuspend(data_logging_tHandle);
     vTaskSuspend(data_telemetry_tHandle);
     vTaskSuspend(failure_tHandle);
-    Serial.println("Done Suspending Tasks, entering switch case statement");
     while (true){
         switch (state)
         {
@@ -27,11 +23,8 @@ void FSM(void*){
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
         case ROP:
-        Serial.println("Suspending Initialize task");
-        vTaskSuspend(initialize_tHandle);
-        delay(1000);
-        Serial.println("Resuming data telemetry tasks");
-        delay(1000);
+        vTaskResume(get_data_tHandle);
+        vTaskResume(apogee_detection_tHandle);
         vTaskResume(data_telemetry_tHandle);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
@@ -51,10 +44,6 @@ void FSM(void*){
         while(true) Serial.println("TOUCHDOWN");
             break;
         case FAILURE:
-        Serial.println("Suspending all tasks");
-        vTaskSuspend(initialize_tHandle);
-        Serial.println("Resuming FAILURE state");
-        delay(1000);
         vTaskResume(failure_tHandle);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;

@@ -8,7 +8,11 @@
 
 void failure_t(void *){
     while(true){
-        Serial.println("Failure");
-        delay(1000);
+        digitalWrite(MISHAP, arduino::HIGH);
+        tone(BUZZER, 1000);
+        delay(250);
+        digitalWrite(MISHAP, arduino::LOW);
+        noTone(BUZZER);
+        delay(250);
     }
 }
