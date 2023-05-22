@@ -8,7 +8,7 @@
 
 void data_telemetry(void*){
   while(true){
-    Serial.println("Data Telemetry");
-    delay(1000);
+    // Serial.println("Data Telemetry");
+    // delay(1000);
   }
 }

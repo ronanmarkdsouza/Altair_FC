@@ -20,9 +20,11 @@ void FSM(void*){
         case INITIALIZE:
         Serial.println("Resuming initialize task");
         vTaskResume(initialize_tHandle);
+        delay(1000);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
         case ROP:
+        vTaskSuspend(initialize_tHandle);
         vTaskResume(get_data_tHandle);
         vTaskResume(apogee_detection_tHandle);
         vTaskResume(data_telemetry_tHandle);
@@ -45,6 +47,11 @@ void FSM(void*){
             break;
         case FAILURE:
         vTaskResume(failure_tHandle);
+        vTaskSuspend(initialize_tHandle);
+        vTaskSuspend(get_data_tHandle);
+        vTaskSuspend(apogee_detection_tHandle);
+        vTaskSuspend(data_logging_tHandle);
+        vTaskSuspend(data_telemetry_tHandle);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
         default:

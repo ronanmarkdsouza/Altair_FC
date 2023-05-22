@@ -36,6 +36,9 @@ TaskHandle_t data_logging_tHandle = NULL;
 TaskHandle_t failure_tHandle = NULL;
 TaskHandle_t FSM_tHandle = NULL;
 
+BMP388 bmp; 
+BMP388::BMP388_data bmp_data;
+
 FLASHMEM __attribute__((noinline)) void setup()
 {
   Serial.begin(9600);

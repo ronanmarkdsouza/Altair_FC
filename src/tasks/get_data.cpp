@@ -6,15 +6,18 @@
  */
 #include "../../../Altair_FC/src/tasks/tasks.h"
 
+float estimate_altitude(float pressure, float temperature){
+  float altitude = ((pow(101325/pressure,1/5.257) - 1) * (temperature + 273.15))/0.0065; 
+  return altitude;
+}
+
 void get_data(void*){
+  ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
   while(true){
-    time_t now = time(0);
-    tm *gmtm = gmtime(&now);
-    String time_stamp = asctime(gmtm);
-    
+    bmp.get_new_data(&bmp_data);
+    float altitude = estimate_altitude(bmp_data.pressure, bmp_data.temperature);
     taskENTER_CRITICAL();
-    data_pack.time_stamp = time_stamp;
-    data_pack.alt = 10.2;
+    data_pack.alt = altitude;
     data_pack.vel = 10.2;
     data_pack.pres = 10.2;
     data_pack.ax = 10.2;

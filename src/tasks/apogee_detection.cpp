@@ -8,8 +8,7 @@
 
 void apogee_detection(void*) {
     while (true) {
-        Serial.print("Apogee Detection --> ");
-        Serial.println(data_pack.pitch);
+        Serial.println(data_pack.alt);
         delay(1000);
     }
 }

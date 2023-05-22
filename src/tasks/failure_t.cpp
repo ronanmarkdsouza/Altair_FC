@@ -8,6 +8,7 @@
 
 void failure_t(void *){
     while(true){
+        digitalWrite(SENSOR_CHECK, arduino::LOW);
         digitalWrite(MISHAP, arduino::HIGH);
         tone(BUZZER, 1000);
         delay(250);

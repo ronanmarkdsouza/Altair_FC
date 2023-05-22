@@ -5,6 +5,8 @@
 #include <imxrt.h>
 #include <SD.h>
 #include "thrustMIT.h"
+#include <SPI.h> 
+#include <BMP388.h>
 extern Data data_pack;
 extern States state;
 extern TaskHandle_t initialize_tHandle;
@@ -16,6 +18,8 @@ extern TaskHandle_t data_logging_tHandle;
 extern TaskHandle_t failure_tHandle;
 extern TaskHandle_t FSM_tHandle;
 extern TaskHandle_t stateChangeTaskHandle;
+extern BMP388 bmp; 
+extern BMP388::BMP388_data bmp_data;
 
 void get_data(void*);
 void apogee_detection(void*);

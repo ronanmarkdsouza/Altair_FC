@@ -2,7 +2,6 @@
 #define DATA_PACKET_H
 
 struct Data{
-    String time_stamp;
     float alt;
     float vel;
     float pres;
