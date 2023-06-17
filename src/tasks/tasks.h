@@ -7,6 +7,9 @@
 #include "thrustMIT.h"
 #include <SPI.h> 
 #include <BMP388.h>
+#include <task.h>
+#include <semphr.h>
+
 extern Data data_pack;
 extern States state;
 extern TaskHandle_t initialize_tHandle;
@@ -18,8 +21,11 @@ extern TaskHandle_t data_logging_tHandle;
 extern TaskHandle_t failure_tHandle;
 extern TaskHandle_t FSM_tHandle;
 extern TaskHandle_t stateChangeTaskHandle;
+extern TaskHandle_t ROP_tHandle;
 extern BMP388 bmp; 
 extern BMP388::BMP388_data bmp_data;
+extern SemaphoreHandle_t dataSem;
+extern float initial_alt;
 
 void get_data(void*);
 void apogee_detection(void*);
@@ -28,6 +34,7 @@ void data_telemetry(void*);
 void data_logging(void*);
 void initialize(void *);
 void failure_t(void *);
+void ROP_t(void *);
 void FSM(void *);
 
 #endif

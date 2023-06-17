@@ -4,13 +4,7 @@
 enum States{
     INITIALIZE,
     ROP,
-    LIFTOFF,
-    BOOST,
-    COAST,
-    APOGEE,
-    DESCENT,
-    DISREEFED,
-    TOUCHDOWN,
+    ARMED,
     FAILURE
 };
 

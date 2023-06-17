@@ -35,7 +35,9 @@ TaskHandle_t data_telemetry_tHandle = NULL;
 TaskHandle_t data_logging_tHandle = NULL;
 TaskHandle_t failure_tHandle = NULL;
 TaskHandle_t FSM_tHandle = NULL;
-
+TaskHandle_t ROP_tHandle = NULL;
+float initial_alt;
+SemaphoreHandle_t dataSem;
 BMP388 bmp; 
 BMP388::BMP388_data bmp_data;
 
@@ -43,11 +45,14 @@ FLASHMEM __attribute__((noinline)) void setup()
 {
   Serial.begin(9600);
   GPS_SERIAL.begin(9600);
+  XB_SERIAL.begin(9600);
+  dataSem= xSemaphoreCreateBinary();
   pinMode(MAIN, arduino::OUTPUT);
   pinMode(DROGUE, arduino::OUTPUT);
   pinMode(BUZZER, arduino::OUTPUT);
   pinMode(MISHAP, arduino::OUTPUT);
   pinMode(SENSOR_CHECK, arduino::OUTPUT);
+  dataSem= xSemaphoreCreateBinary();
   xTaskCreate(FSM, "FSM", 8192, nullptr, 1, &FSM_tHandle);
   xTaskCreate(initialize, "Initialize", 8192, nullptr, 1, &initialize_tHandle);
   xTaskCreate(get_data, "Get Data", 8192, nullptr, 1, &get_data_tHandle);
@@ -55,7 +60,7 @@ FLASHMEM __attribute__((noinline)) void setup()
   xTaskCreate(data_telemetry, "Data Telemetry", 8192, nullptr, 1, &data_telemetry_tHandle);
   xTaskCreate(data_logging, "Data Logging", 8192, nullptr, 1, &data_logging_tHandle);
   xTaskCreate(failure_t, "Failure", 8192, nullptr, 1, &failure_tHandle);
+  xTaskCreate(ROP_t, "ROP", 8192, nullptr, 1, &ROP_tHandle);
   vTaskStartScheduler();
 }
-
 void loop() {}

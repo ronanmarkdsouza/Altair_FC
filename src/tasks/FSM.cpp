@@ -7,6 +7,20 @@
 #include "../../../Altair_FC/src/tasks/tasks.h"
 
 States state = INITIALIZE;
+
+void initialize_beep(){
+    tone(BUZZER, 1000);
+    delay(50);
+    noTone(BUZZER);
+    delay(50);
+    tone(BUZZER, 1000);
+    delay(50);
+    noTone(BUZZER);
+    delay(50);
+    tone(BUZZER, 1000);
+    delay(100);
+    noTone(BUZZER);
+}
 void FSM(void*){
     vTaskSuspend(initialize_tHandle);
     vTaskSuspend(get_data_tHandle);
@@ -14,6 +28,7 @@ void FSM(void*){
     vTaskSuspend(data_logging_tHandle);
     vTaskSuspend(data_telemetry_tHandle);
     vTaskSuspend(failure_tHandle);
+    vTaskSuspend(ROP_tHandle);
     while (true){
         switch (state)
         {
@@ -26,24 +41,14 @@ void FSM(void*){
         case ROP:
         vTaskSuspend(initialize_tHandle);
         vTaskResume(get_data_tHandle);
-        vTaskResume(apogee_detection_tHandle);
         vTaskResume(data_telemetry_tHandle);
+        vTaskResume(data_logging_tHandle);
+        vTaskResume(ROP_tHandle);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
-        case COAST:
-        while(true) Serial.println("COAST");
-            break;
-        case APOGEE:
-        while(true) Serial.println("APOGEE");
-            break;
-        case DESCENT:
-        while(true) Serial.println("DESCENT");
-            break;
-        case DISREEFED:
-        while(true) Serial.println("DISREEFED");
-            break;
-        case TOUCHDOWN:
-        while(true) Serial.println("TOUCHDOWN");
+        case ARMED:
+        vTaskSuspend(ROP_tHandle);
+        vTaskResume(apogee_detection_tHandle);
             break;
         case FAILURE:
         vTaskResume(failure_tHandle);
@@ -57,5 +62,5 @@ void FSM(void*){
         default:
             break;
         }
-    }
+  }
 }
