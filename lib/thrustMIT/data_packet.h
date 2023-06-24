@@ -2,8 +2,11 @@
 #define DATA_PACKET_H
 
 struct Data{
+    float vel;
     float alt;
-    String GPS;
+    float pres;
+    float lat;
+    float lon;
 };
 
 #endif

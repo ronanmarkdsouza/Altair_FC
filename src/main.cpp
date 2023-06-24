@@ -36,6 +36,8 @@ TaskHandle_t data_logging_tHandle = NULL;
 TaskHandle_t failure_tHandle = NULL;
 TaskHandle_t FSM_tHandle = NULL;
 TaskHandle_t ROP_tHandle = NULL;
+TaskHandle_t Drogue_out_tHandle = NULL;
+TaskHandle_t kadar_tHandle = NULL;
 float initial_alt;
 SemaphoreHandle_t dataSem;
 BMP388 bmp; 
@@ -52,6 +54,10 @@ FLASHMEM __attribute__((noinline)) void setup()
   pinMode(BUZZER, arduino::OUTPUT);
   pinMode(MISHAP, arduino::OUTPUT);
   pinMode(SENSOR_CHECK, arduino::OUTPUT);
+  pinMode(MPX_1, arduino::OUTPUT);
+  pinMode(MPX_2, arduino::OUTPUT);
+  pinMode(DROGUE, arduino::OUTPUT);
+  pinMode(MAIN, arduino::OUTPUT);
   dataSem= xSemaphoreCreateBinary();
   xTaskCreate(FSM, "FSM", 8192, nullptr, 1, &FSM_tHandle);
   xTaskCreate(initialize, "Initialize", 8192, nullptr, 1, &initialize_tHandle);
@@ -60,7 +66,10 @@ FLASHMEM __attribute__((noinline)) void setup()
   xTaskCreate(data_telemetry, "Data Telemetry", 8192, nullptr, 1, &data_telemetry_tHandle);
   xTaskCreate(data_logging, "Data Logging", 8192, nullptr, 1, &data_logging_tHandle);
   xTaskCreate(failure_t, "Failure", 8192, nullptr, 1, &failure_tHandle);
+  xTaskCreate(drogue_out, "Drogue Out", 8192, nullptr, 1, &Drogue_out_tHandle);
+  xTaskCreate(kadar_rec, "Kadar REcovery", 8192, nullptr, 1, &kadar_tHandle);
   xTaskCreate(ROP_t, "ROP", 8192, nullptr, 1, &ROP_tHandle);
   vTaskStartScheduler();
 }
+
 void loop() {}

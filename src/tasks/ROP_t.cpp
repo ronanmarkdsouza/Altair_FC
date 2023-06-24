@@ -27,10 +27,12 @@ void ROP_beep(){
 void ROP_t(void *){
   initial_alt = data_pack.alt;
   while (true){
-    Serial.println("ROP state");
+    // Serial.print("0.0,");
+    Serial.println(data_pack.alt-initial_alt);
+    // Serial.println(",0.0,32.3250,-106.7482");
     ROP_beep();
 
-    if(data_pack.alt-initial_alt >100.0){
+    if(data_pack.alt-initial_alt >500.0){
       noTone(BUZZER);
       taskENTER_CRITICAL();
       state = ARMED;

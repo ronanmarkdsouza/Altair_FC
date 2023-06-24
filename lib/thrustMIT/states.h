@@ -5,6 +5,8 @@ enum States{
     INITIALIZE,
     ROP,
     ARMED,
+    DROGUE_OUT,
+    RECOVERED,
     FAILURE
 };
 

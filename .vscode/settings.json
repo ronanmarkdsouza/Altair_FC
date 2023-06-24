@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "core_pins.h": "c",
-        "pin_definitions.c": "cpp"
-    }
+        "pin_definitions.c": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

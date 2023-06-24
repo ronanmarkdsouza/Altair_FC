@@ -15,8 +15,8 @@
 #define BMP_CS 10
 #define MPU_SDA 18
 #define MPU_SCL 19
-#define MPX_1 14
-#define MPX_2 15 
+#define MPX_1 A0
+#define MPX_2 A1
 #define GPS_RX 17
 #define GPS_TX 16
 #define XB_RX 8

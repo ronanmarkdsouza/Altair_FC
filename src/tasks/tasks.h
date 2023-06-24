@@ -22,6 +22,8 @@ extern TaskHandle_t failure_tHandle;
 extern TaskHandle_t FSM_tHandle;
 extern TaskHandle_t stateChangeTaskHandle;
 extern TaskHandle_t ROP_tHandle;
+extern TaskHandle_t Drogue_out_tHandle;
+extern TaskHandle_t kadar_tHandle;
 extern BMP388 bmp; 
 extern BMP388::BMP388_data bmp_data;
 extern SemaphoreHandle_t dataSem;
@@ -35,6 +37,8 @@ void data_logging(void*);
 void initialize(void *);
 void failure_t(void *);
 void ROP_t(void *);
+void drogue_out(void *);
+void kadar_rec(void *);
 void FSM(void *);
 
 #endif

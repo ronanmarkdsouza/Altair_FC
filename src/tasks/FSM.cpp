@@ -29,6 +29,8 @@ void FSM(void*){
     vTaskSuspend(data_telemetry_tHandle);
     vTaskSuspend(failure_tHandle);
     vTaskSuspend(ROP_tHandle);
+    vTaskSuspend(Drogue_out_tHandle);
+    vTaskSuspend(kadar_tHandle);
     while (true){
         switch (state)
         {
@@ -49,7 +51,19 @@ void FSM(void*){
         case ARMED:
         vTaskSuspend(ROP_tHandle);
         vTaskResume(apogee_detection_tHandle);
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
+        case DROGUE_OUT:
+            vTaskSuspend(apogee_detection_tHandle);
+            vTaskResume(Drogue_out_tHandle);
+            ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+            break;
+        case RECOVERED:
+        vTaskSuspend(Drogue_out_tHandle);
+        Serial.println("Recovered.");
+        vTaskResume(kadar_tHandle);
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        break;
         case FAILURE:
         vTaskResume(failure_tHandle);
         vTaskSuspend(initialize_tHandle);
@@ -59,6 +73,7 @@ void FSM(void*){
         vTaskSuspend(data_telemetry_tHandle);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
             break;
+
         default:
             break;
         }

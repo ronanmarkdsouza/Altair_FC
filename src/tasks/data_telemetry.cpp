@@ -11,7 +11,7 @@ uint8_t destAddress[] = { 0x00, 0x13, 0xA2, 0x00, 0x41, 0x03, 0x63, 0xD5 };  // 
 
 uint8_t packet[256];
 
-void createXBeePacket(uint8_t* destAddress, char* data, uint16_t length, uint8_t* packet) {
+void createXBeePacket(uint8_t* destAddress, String data, uint16_t length, uint8_t* packet) {
   uint8_t checksum = 0;
   packet[0] = 0x7E;
   packet[1] = (length + 13) >> 8; // MSB, Adjust the length to include the destination address and other packet overhead
@@ -24,7 +24,11 @@ void createXBeePacket(uint8_t* destAddress, char* data, uint16_t length, uint8_t
   packet[15] = 0x00;
   packet[16] = 0x00;
 
-  memcpy(packet + 17, data, length);
+  // memcpy(packet + 17, data, length);
+
+    for (uint16_t i = 0; i < data.length(); i++) {
+    packet[i + 17] = data[i];
+  }
 
   for (int i = 3; i < length + 16; i++) {
     checksum += packet[i];
@@ -38,14 +42,26 @@ void data_telemetry(void*){
   digitalWrite(TEL_LINK, arduino::HIGH);
   while(true){
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    int length = snprintf(nullptr, 0, "%f", data_pack.alt-initial_alt) + 1; // Determine required size
-    char* data = new char[length]; // Allocate memory dynamically
-    snprintf(data, length, "%f", data_pack.alt-initial_alt); // Convert float to char array
+    unsigned long elapsedMillis = millis();
 
+  // Calculate minutes and seconds
+  unsigned int minutes = (elapsedMillis / 60000) % 60;
+  unsigned int seconds = (elapsedMillis / 1000) % 60;
+
+    String data1 = String(minutes);
+    String data2 = String(seconds);
+    String data3 = String(data_pack.vel,3);
+    String data4 = String(data_pack.alt-initial_alt, 3);
+    String data5 = String(data_pack.pres, 3);
+    String data6 = String(data_pack.lat, 4);
+    String data7 = String(data_pack.lon, 4);
+    String data = data3+ "," + data4+ "," + data5+ "," + data6+ "," + data7;
+    // data1 + ":" + data2 + "," + 
+    uint16_t length = data.length(); 
     createXBeePacket(destAddress, data, length, packet);
     for (int i = 0; i < length+17; i++) {
     XB_SERIAL.write(packet[i]);
     }
-    delay(100);
+    delay(5);
   }
 }
